@@ -52,6 +52,8 @@ setLocalStorage <- function(session, ..., .dots) {
 #'
 #'@param tag An input element whose value you want to store in localStorage
 #'
+#'@export
 storeInput <- function(tag) {
-  tag$attribs$class <- paste(tag$attribs$class, "shiny-stored-input")
+  tag$attribs$class <- paste(tag$attribs$class, "shiny-local-storage")
+  return(attachDependencies(tag, shinyLocalStorageDep))
 }

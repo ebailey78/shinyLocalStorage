@@ -10,6 +10,8 @@
 library(shiny)
 library(shinyLocalStorage)
 
+options(shiny.port = 4123)
+
 # Define UI for application that draws a histogram
 ui <- shinyUI(fluidPage(
 
@@ -22,13 +24,12 @@ ui <- shinyUI(fluidPage(
         useLocalStorage(),
         actionButton("test1", "Set Value"),
         actionButton("test2", "Set Another Value"),
-         sliderInput("bins",
+         storeInput(sliderInput("bins",
                      "Number of bins:",
                      min = 1,
                      max = 50,
-                     value = 30)
+                     value = 30))
       ),
-
       # Show a plot of the generated distribution
       mainPanel(
         textOutput("testOutput"),
@@ -49,8 +50,10 @@ server <- shinyServer(function(input, output, session) {
   })
 
   output$testOutput <- renderText({
-    as.numeric(input$localStorage$x) + as.numeric(input$localStorage$y)
+    print(input$localStorage$inputs)
+    as.numeric(input$localStorage$x) + as.numeric(input$localStorage$y) + as.numeric(input$localStorage$inputs$bins)
   })
+
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
       x    <- faithful[, 2]
